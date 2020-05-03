@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+        <title>CandiFonts</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="alert alert-primary mt-2 text-center" role="alert">
+                <h1>CandiFonts</h1>
+            </div>
+            <div class="alert alert-success" role="alert">
+                输入文字，寻找样式，点击复制，就是这么简单！
+            </div>
+            <div class="input-group mb-4">
+                <textarea class="form-control" id="input" style="height: 160px; font-size: 1.5em" placeholder="文字输入这里哦~"></textarea>
+            </div>
+            <div id="output-area" class="pre-scrollable" style="max-height: 540px;">
+                <!-- 
+                <button type="button" class="btn btn-light btn-block mt-3 text-left" data-toggle="tooltip" data-placement="top" title="戳我复制 =ω=">
+                    <p class="card-text">Test000000000</p>
+                </button>
+                <button type="button" class="btn btn-light btn-block mt-3 text-left" data-toggle="tooltip" data-placement="top" title="戳我复制 =ω=">
+                    <p class="card-text">
+                        Test111111111
+                        <br />
+                        2222222
+                    </p>
+                </button>
+                <button type="button" class="btn btn-light btn-block mt-3 text-left" data-toggle="tooltip" data-placement="top" title="戳我复制 =ω=">
+                    <p class="card-text">Test000000000</p>
+                </button>
+                 -->
+
+
+                 
+            </div>
+            <textarea id="syncField" style="height: 1px; opacity: 0; z-index:-10; cursor: default;" readonly></textarea>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.0.6/dist/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
+        <script async src="./gen.js"></script>
+
+        <script>
+            // $(document).ready(function(){
+            //     $('#output-area').css("maxHeight", document.body.clientHeight - 400 + "px");
+            // });
+            const syncField = document.querySelector("#syncField");
+            function copyText(text) {
+                syncField.innerText = text;
+                syncField.select();
+                if (document.execCommand("copy") ) {
+                    console.log(text + " 复制成功~");
+                }
+            }
+        </script>
+
+    </body>
+</html>

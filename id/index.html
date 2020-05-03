@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css">
+        <title>ID Tool</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="alert alert-primary mt-2 text-center" role="alert">
+                <h1>身份证号生成器</h1>
+            </div>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>警告</strong>：本程式仅供学习参考使用，使用时请严格遵守当地的法律法规。
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <ul class="nav nav-pills mb-3" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="gen-tab" data-toggle="tab" href="#generate" role="tab" aria-controls="generate" aria-selected="true">生成</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="verify-tab" data-toggle="tab" href="#verify" role="tab" aria-controls="verify" aria-selected="false">校验</a>
+                        </li>
+        
+                    </ul>
+                    <div class="tab-content mt-3" >
+                        <div class="tab-pane fade show active" id="generate" role="tabpanel" aria-labelledby="gen-tab">
+                            <form class=" mx-auto">
+                                <div class="form-row align-items-center d-inline-flex mx-1">
+                                    <div class="col-auto my-1">
+                                        <select class="custom-select mr-sm-2" id="ID-Addr-Prov">
+                                            <option selected disabled hidden>省级</option>
+                                            <!-- <option value="000000">Demo</option> -->
+                                        </select>
+                                    </div>
+                                    <div class="col-auto my-1">
+                                        <select class="custom-select mr-sm-2" style="display: none" id="ID-Addr-City">
+                                            <option selected disabled hidden>市级</option>
+                                            <!-- <option value="000000">Demo</option> -->
+                                        </select>
+                                    </div>
+                                    <div class="col-auto my-1">
+                                        <select class="custom-select mr-sm-2" style="display: none" id="ID-Addr-Dist">
+                                            <option selected disabled hidden>区级</option>
+                                            <!-- <option value="000000">Demo</option> -->
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row align-items-center d-inline-flex mx-1">
+                                    <div class="col-auto my-1">
+                                        <input type="number" class="form-control mb-2 mr-sm-1" id="ID-Birth" placeholder="出生时间" min="10000000" max="99999999">
+                                    </div>
+                                </div>
+                                <div class="form-row align-items-center d-inline-flex mx-1">
+                                    <input type="number" class="form-control mb-2 mr-sm-1" id="ID-Num" placeholder="编号" min="0" max="99">
+                                </div>
+
+                                <div class="form-row align-items-center d-inline-flex mx-1">
+                                    <div class="col-auto my-1">
+                                        <!-- <select class="custom-select mr-sm-2" id="ID-Gend">
+                                            <option selected disabled hidden>性别</option>
+                                            <option value="m">男</option>
+                                            <option value="f">女</option>
+                                            <option value="r">随机</option>
+                                        </select> -->
+                                        <input type="number" class="form-control mb-2 mr-sm-1" id="ID-Gender" placeholder="性别" min="1" max="9">
+                                    </div>
+                                </div>
+                                <div class="form-row align-items-center d-inline-flex mx-1">
+                                    <div class="col-auto my-1">
+                                        <div class="custom-control custom-checkbox mr-sm-2">
+                                            <input type="checkbox" class="custom-control-input" id="ID-AutoCopy" checked="true">
+                                            <label class="custom-control-label" for="ID-AutoCopy">自动复制</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto my-1">
+                                        <div id="ID-Generate" class="btn btn-success" style="cursor: pointer">生成！</div>
+                                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ID-Gen-Help">?</button>
+                                    </div>
+                                </div>
+                                
+                            </form>
+                            <div>
+                                <div class="col-sm-10 my-3 mx-auto">
+                                    <input type="text" class="form-control form-control-lg text-center" id="ID-Full" placeholder="生成的身份证号" readonly="readonly">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="tab-pane fade" id="verify" role="tabpanel" aria-labelledby="verify-tab">
+                            <div class="col-auto my-1">
+                                <input type="text" class="form-control form-control-lg text-center" id="ID-Input" placeholder="身份证号输这里~输完点别处就可以验证啦！">
+                            </div>
+                            <div id="ID-Verify-Result" class="alert mt-4" style="display:none" role="alert">
+                                <h4 class="alert-heading">校验结果：</h4><br />
+                                <p id="ID-Verify-Summary"></p>
+                                <hr />
+                                <p id="ID-Verify-Addr"></p>
+                                <p id="ID-Verify-Birth"></p>
+                                <p id="ID-Verify-Num"></p>
+                                <p id="ID-Verify-Gender"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="ID-Gen-Help" tabindex="-1" role="dialog" aria-labelledby="ID Generator Help" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">帮助</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    身份证的生成分为5个部分，                           <br />
+                    第一个部分是地区编号（6位），                       <br />
+                    第二个部分是出生日期（8位），                       <br />
+                    第三个部分是出生编号（2位），                       <br />
+                    第四个部分是性别（1位，奇数为男性，偶数为女性），     <br />
+                    最后一位是校验位（系统自动生成）。
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">我知道了</button>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.0.8/dist/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+        <!-- <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js"></script> -->
+
+        <script>
+            var ID_Num = new Object;
+                ID_Num.Addr   = 000000;
+                ID_Num.Birth  = 00000000;
+                ID_Num.Num    = 00;
+                ID_Num.Gender = 0;
+            var AddrDat = new Object;
+            window.onload = () => {
+                $.ajax({
+                    url: "addr.json",
+                    dataType: "json",
+                    success: data => {
+                        AddrDat = data.data;
+                        let ProvList = Object.keys(AddrDat.Province);
+                        ProvList.forEach(e => {
+                            $('#ID-Addr-Prov').append('<option value="' + e + '">' + AddrDat.Province[e] + '</option>');
+                        });
+                    }
+                });
+            };
+            
+            $('#ID-Addr-Prov').change(() => {
+                $('#ID-Addr-Prov').removeClass("is-invalid");
+                let CityList = Object.keys(AddrDat.City);
+                $('#ID-Addr-City').empty();
+                $('#ID-Addr-City').append('<option selected disabled hidden>市级</option>');
+                $('#ID-Addr-Dist').empty();
+                $('#ID-Addr-Dist').append('<option selected disabled hidden>区级</option>');
+                var counter = 0;
+                CityList.forEach(e => {
+                    if (Math.floor(e / 10000) === Math.floor($('#ID-Addr-Prov')[0].value / 10000)) {
+                        $('#ID-Addr-City').append('<option value="' + e + '">' + AddrDat.City[e] + '</option>');
+                        counter++;
+                    }
+                });
+                if (counter === 0) {
+                    $('#ID-Addr-City').fadeOut();
+                    $('#ID-Addr-Dist').fadeOut();
+                    ID_Num.Addr = $('#ID-Addr-Prov')[0].value;
+                    $('#ID-Addr-Prov').addClass("is-valid");
+                } else {
+                    $('#ID-Addr-Prov').removeClass("is-valid");
+                    $('#ID-Addr-City').removeClass("is-valid");
+                    $('#ID-Addr-City').fadeIn();
+                    ID_Num.Addr   = 000000;
+                }
+            });
+            $('#ID-Addr-City').change(() => {
+                $('#ID-Addr-City').removeClass("is-invalid");
+                let DistList = Object.keys(AddrDat.District);
+                $('#ID-Addr-Dist').empty();
+                $('#ID-Addr-Dist').append('<option selected disabled hidden>区级</option>');
+                var counter = 0;
+                DistList.forEach(e => {
+                    if (Math.floor(e / 100) === Math.floor($('#ID-Addr-City')[0].value / 100)) {
+                        $('#ID-Addr-Dist').append('<option value="' + e + '">' + AddrDat.District[e] + '</option>');
+                        counter++;
+                    }
+                });
+                if (counter === 0) {
+                    $('#ID-Addr-Dist').fadeOut();
+                    ID_Num.Addr = $('#ID-Addr-City')[0].value;
+                    $('#ID-Addr-Prov').addClass("is-valid");
+                    $('#ID-Addr-City').addClass("is-valid");
+                } else {
+                    $('#ID-Addr-Prov').removeClass("is-valid");
+                    $('#ID-Addr-City').removeClass("is-valid");
+                    $('#ID-Addr-Dist').removeClass("is-valid");
+                    $('#ID-Addr-Dist').fadeIn();
+                    ID_Num.Addr   = 000000;
+                }
+            });
+            $('#ID-Addr-Dist').change(() => {
+                $('#ID-Addr-Dist').removeClass("is-invalid");
+                ID_Num.Addr = $('#ID-Addr-Dist')[0].value;
+                $('#ID-Addr-Prov').addClass("is-valid");
+                $('#ID-Addr-City').addClass("is-valid");
+                $('#ID-Addr-Dist').addClass("is-valid");
+            });
+
+            $('#ID-Birth').datepicker({
+                format: "yyyymmdd",
+                startView: 2,
+                maxViewMode: 3,
+                clearBtn: true,
+                language: "zh-CN",
+                forceParse: false
+            });
+            $('#ID-Birth').change(() => {
+                ID_Num.Birth = $('#ID-Birth')[0].value;
+                if (ID_Num.Birth >= 10000000 && ID_Num.Birth <= 99999999) {
+                    $('#ID-Birth').removeClass("is-invalid");
+                    $('#ID-Birth').addClass("is-valid");
+                } else {
+                    $('#ID-Birth').removeClass("is-valid");
+                    $('#ID-Birth').addClass("is-invalid");
+                }
+            });
+
+            $('#ID-Num').change(() => {
+                ID_Num.Num = $('#ID-Num')[0].value;
+                if (ID_Num.Num >= 0 && ID_Num.Num <= 99) {
+                    $('#ID-Num').removeClass("is-invalid");
+                    $('#ID-Num').addClass("is-valid");
+                } else {
+                    $('#ID-Num').removeClass("is-valid");
+                    $('#ID-Num').addClass("is-invalid");
+                }
+            });
+            $('#ID-Gender').change(() => {
+                ID_Num.Gender = $('#ID-Gender')[0].value;
+                if (ID_Num.Gender >= 1 && ID_Num.Gender <= 9) {
+                    $('#ID-Gender').removeClass("is-invalid");
+                    $('#ID-Gender').addClass("is-valid");
+                } else {
+                    $('#ID-Gender').removeClass("is-valid");
+                    $('#ID-Gender').addClass("is-invalid");
+                }
+            });
+
+            $('#ID-Generate').click(() => {
+                var noErr = true;
+                if (ID_Num.Addr === 0) {
+                    $('#ID-Addr-Prov').removeClass("is-valid");
+                    $('#ID-Addr-City').removeClass("is-valid");
+                    $('#ID-Addr-Dist').removeClass("is-valid");
+                    $('#ID-Addr-Prov').addClass("is-invalid");
+                    $('#ID-Addr-City').addClass("is-invalid");
+                    $('#ID-Addr-Dist').addClass("is-invalid");
+                    noErr = false;
+                }
+                if (ID_Num.Birth < 10000000 || ID_Num.Birth > 99999999) {
+                    $('#ID-Birth').removeClass("is-valid");
+                    $('#ID-Birth').addClass("is-invalid");
+                    noErr = false;
+                }
+                if (ID_Num.Num < 0 || ID_Num.Num > 99) {
+                    $('#ID-Num').removeClass("is-valid");
+                    $('#ID-Num').addClass("is-invalid");
+                    noErr = false;
+                }
+                if (ID_Num.Gender < 1 || ID_Num.Gender > 9) {
+                    $('#ID-Gender').removeClass("is-valid");
+                    $('#ID-Gender').addClass("is-invalid");
+                    noErr = false;
+                }
+                if (noErr) {
+                    $('#ID-Full').empty();
+                    var ID_Full;
+                    ID_Full = ID_Num.Addr + ID_Num.Birth;
+                    if (ID_Num.Num < 10) {
+                        ID_Full += "0";
+                    }
+                    ID_Full += ID_Num.Num + ID_Num.Gender;
+                    ID_Full += GetValidateCode(ID_Full);
+                    $('#ID-Full')[0].value = ID_Full;
+                    if (document.getElementById('ID-AutoCopy').checked) {
+                        const input = document.querySelector('#ID-Full');
+                        input.select();
+                        if (document.execCommand('copy')) {
+                            // document.execCommand('copy');
+                            $('#ID-Full').tooltip();
+                        }
+                    }
+                }
+            });
+
+            $('#ID-Input').change(() => {
+                if ($('#ID-Input')[0].value.length == 18) {
+                    var errType = "NoErr";
+                    const ID_Input = $('#ID-Input')[0].value;
+                    var ID_Tmp_String = ID_Input.substring(0,6);
+                    if (AddrDat.Province[ID_Tmp_String]) {
+                        $('#ID-Verify-Addr').html('<strong>地址信息：</strong>' + AddrDat.Province[ID_Tmp_String]);
+                    } else if (AddrDat.City[ID_Tmp_String]) {
+                        $('#ID-Verify-Addr').html('<strong>地址信息：</strong>' + AddrDat.Province[(Math.floor(parseInt(ID_Tmp_String) / 10000) * 10000).toString()] + ' ' + AddrDat.City[ID_Tmp_String]);
+                    } else if (AddrDat.District[ID_Tmp_String]) {
+                        $('#ID-Verify-Addr').html('<strong>地址信息：</strong>' + AddrDat.Province[(Math.floor(parseInt(ID_Tmp_String) / 10000) * 10000).toString()] + ' ' + AddrDat.City[(Math.floor(parseInt(ID_Tmp_String) / 100) * 100).toString()] + ' ' + AddrDat.District[ID_Tmp_String]);
+                    } else {
+                        $('#ID-Verify-Addr').html('<strong>地址信息：</strong> 未找到有效地址！');
+                        errType = "Addr";
+                    }
+
+                    $('#ID-Verify-Birth').html('<strong>出生日期：</strong>' + ID_Input.substring(6,10) + '年' + ID_Input.substring(10,12) + '月' + ID_Input.substring(12,14) + '日');
+                    $('#ID-Verify-Num').html('<strong>出生编号：</strong>' + ID_Input.substring(14,16));
+                    $('#ID-Verify-Gender').html('<strong>出生性别：</strong>' + ((parseInt(ID_Input.charAt(16)) % 2 === 0) ? '女' : '男'));
+
+                    ID_Tmp_String = GetValidateCode(ID_Input);
+                    if (ID_Tmp_String != ID_Input.charAt(17).toUpperCase()) {
+                        errType = "ValiCode";
+                    }
+
+                    $('#ID-Verify-Result').removeClass("alert-success");
+                    $('#ID-Verify-Result').removeClass("alert-warning");
+                    if (errType != "NoErr") {
+                        $('#ID-Verify-Result').addClass("alert-warning");
+                        if (errType === "Addr") {
+                            $('#ID-Verify-Summary').html('未找到有效的匹配地址');
+                        } else if (errType === "ValiCode") {
+                            $('#ID-Verify-Summary').html('校验码错误，应为 ' + ID_Tmp_String);
+                        }
+                    } else {
+                        $('#ID-Verify-Result').addClass("alert-success");
+                        $('#ID-Verify-Summary').html('这个身份证号是有效哒~');
+                    }
+
+                    $('#ID-Verify-Result').fadeIn();
+                } else {
+                    $('#ID-Verify-Result').fadeOut();
+                }
+            });
+
+            function GetValidateCode(ID_17C) {
+                var ID_Tmp_Val = [ 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2 ];
+                var ID_Tmp_ValidCode = [ "1", "0", "X", "9", "8", "7", "6", "5", "4", "3", "2" ];
+                var ID_Tmp_Sum = 0;
+                for (var i = 0; i < 17; i++) {
+                    ID_Tmp_Sum += parseInt(ID_17C.charAt(i)) * ID_Tmp_Val[i];
+                }
+                return ID_Tmp_ValidCode[ID_Tmp_Sum % 11];
+            }
+
+        </script>
+    </body>
+</html>
