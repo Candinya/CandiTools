@@ -18,24 +18,8 @@
                 <textarea class="form-control" id="input" style="height: 160px; font-size: 1.5em" placeholder="文字输入这里哦~"></textarea>
             </div>
             <div id="output-area" class="pre-scrollable" style="max-height: 540px;">
-                <!-- 
-                <button type="button" class="btn btn-light btn-block mt-3 text-left" data-toggle="tooltip" data-placement="top" title="戳我复制 =ω=">
-                    <p class="card-text">Test000000000</p>
-                </button>
-                <button type="button" class="btn btn-light btn-block mt-3 text-left" data-toggle="tooltip" data-placement="top" title="戳我复制 =ω=">
-                    <p class="card-text">
-                        Test111111111
-                        <br />
-                        2222222
-                    </p>
-                </button>
-                <button type="button" class="btn btn-light btn-block mt-3 text-left" data-toggle="tooltip" data-placement="top" title="戳我复制 =ω=">
-                    <p class="card-text">Test000000000</p>
-                </button>
-                 -->
 
 
-                 
             </div>
             <textarea id="syncField" style="height: 1px; opacity: 0; z-index:-10; cursor: default;" readonly></textarea>
         </div>
@@ -46,15 +30,18 @@
         <script async src="./gen.js"></script>
 
         <script>
-            // $(document).ready(function(){
-            //     $('#output-area').css("maxHeight", document.body.clientHeight - 400 + "px");
-            // });
             const syncField = document.querySelector("#syncField");
-            function copyText(text) {
+            function copyText(obj) {
+                let text = obj.innerText
                 syncField.innerText = text;
                 syncField.select();
                 if (document.execCommand("copy") ) {
+                    // console.log(obj);
+                    $(obj).attr('data-original-title','复制成功~').tooltip('show');
                     console.log(text + " 复制成功~");
+                    setTimeout(()=>{
+                        $(obj).attr('data-original-title','戳我复制 =ω=');
+                    }, 3000);
                 }
             }
         </script>

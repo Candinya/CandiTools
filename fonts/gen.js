@@ -27,7 +27,7 @@ function _typeof(obj) {
     var luni = new Lunicode();
     luni.tools.creepify.options.maxHeight = 10;
 
-    const text_before = '<button type="button" onclick="copyText(this.innerText)" class="btn btn-light btn-block mt-3 text-left" style="white-space:pre-wrap;" data-toggle="tooltip" data-placement="top" title="戳我复制 =ω="><p class="card-text">';
+    const text_before = '<button type="button" onclick="copyText(this)" class="btn btn-light btn-block mt-3 text-left" style="white-space:pre-wrap;" data-toggle="tooltip" data-placement="top" title="戳我复制 =ω="><p class="card-text">';
     const text_after = '</p></button>';
 
     function generate() {
